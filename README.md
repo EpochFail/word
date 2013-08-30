@@ -17,8 +17,7 @@ Result looks like
 Running it locally
 
     go get
-    go build
-    PORT=5555 ./word
+    PORT=5555 word
     curl http://localhost:5555/api/word
 
 Running it on Heroku
