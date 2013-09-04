@@ -43,6 +43,9 @@ func wordMeBro(w http.ResponseWriter, r *http.Request) {
 }
 
 func upVoteMe(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
 	word := r.URL.Query().Get(":word")
 	updateRating(word, 1)
 
@@ -50,6 +53,9 @@ func upVoteMe(w http.ResponseWriter, r *http.Request) {
 }
 
 func downVoteMe(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
 	word := r.URL.Query().Get(":word")
 	updateRating(word, -1)
 
@@ -62,6 +68,14 @@ func updateRating(word string, vote int) {
 		panic(err)
 	}
 
-	queryString := fmt.Sprintf("insert into votes (word, vote) values ('%s', %d)", word, vote)
-	db.Exec(queryString)
+	log.Print(word)
+	log.Print(vote)
+
+	result, err := db.Exec("insert into votes (word, vote) values (?, ?)", word, vote)
+	//result, err := db.Exec("insert into votes (word, vote) values ("test", 1)")
+	if err != nil {
+		panic(err)
+	}
+
+	log.Print(result)
 }
