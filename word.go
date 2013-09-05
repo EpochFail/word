@@ -40,6 +40,7 @@ func wordMeBro(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	var word_id int
 	var word string
@@ -47,12 +48,10 @@ func wordMeBro(w http.ResponseWriter, r *http.Request) {
 
 	db.QueryRow("SELECT word_id, word, rating FROM words OFFSET random()*(select max(word_id) from words) LIMIT 1").Scan(&word_id, &word, &rating)
 
-	result, err := db.Exec("insert into word_history (word_id) values ($1)", word_id)
+	_, err = db.Exec("insert into word_history (word_id) values ($1)", word_id)
 	if err != nil {
 		panic(err)
 	}
-
-	log.Print(result)
 
 	m := Message{word, rating}
 	b, err := json.Marshal(m)
@@ -107,11 +106,12 @@ func statsMe(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStatsSlice(queryString string) []Message {
-	// TODO: Stop opening db so often. Probably should try and ORM too.
+	// TODO: Probably should try an ORM.
 	db, err := sql.Open("postgres", "user=jsname password=test dbname=jsname_dev sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	rows, err := db.Query(queryString)
 	if err != nil {
@@ -136,14 +136,10 @@ func updateRating(word string, vote int) {
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
-	log.Print(word)
-	log.Print(vote)
-
-	result, err := db.Exec("insert into votes (word, vote) values ($1, $2)", word, vote)
+	_, err = db.Exec("insert into votes (word, vote) values ($1, $2)", word, vote)
 	if err != nil {
 		panic(err)
 	}
-
-	log.Print(result)
 }
