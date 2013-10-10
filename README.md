@@ -1,26 +1,34 @@
 # WORD
 
-Web service for getting a word. Yup.
+Web service for doin' things with words. Yup.
 
 ## Use it
 
-There's a copy hosted on Heroku at http://tranquil-lowlands-2993.herokuapp.com/api/word
+Create a new database user, and give it the password of ````test```` when prompted
+
+    createuser -P jsname
+
+Create a new database
+    
+    createdb -O jsname jsname_dev
+
+Install goose to run the database migrations
+    
+    go get bitbucket.org/liamstask/goose/cmd/goose
+
+Run the migrations. The migrations will also populate the initial word list, which can take some time, so be patient
+    
+    goose up
+
+Run it locally
+
+    go build
+    PORT=5555 ./word
 
 Try it from your console with
     
-    curl http://tranquil-lowlands-2993.herokuapp.com/api/word
+    curl http://localhost:5555/api/word
 
 Result looks like 
     
-    {"word":"spellbinding"}
-
-Running it locally
-
-    go get
-    PORT=5555 word
-    curl http://localhost:5555/api/word
-
-Running it on Heroku
-
-    heroku create -b https://github.com/kr/heroku-buildpack-go.git
-    git push heroku master
+    {"Word":"glittery","Rating":0}
