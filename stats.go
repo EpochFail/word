@@ -31,7 +31,7 @@ func Top10Me(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
-	top10 := getStatsSlice("select distinct word, rating from words order by rating desc limit 10")
+	top10 := getStatsSlice("select word, rating from words order by rating desc limit 10")
 
 	b, err := json.Marshal(top10)
 	if err != nil {
@@ -45,7 +45,7 @@ func Bottom10Me(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
-	bottom10 := getStatsSlice("select distinct word, rating from words order by rating limit 10")
+	bottom10 := getStatsSlice("select word, rating from words order by rating limit 10")
 
 	b, err := json.Marshal(bottom10)
 	if err != nil {
