@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bmizerany/pat"
-	"github.com/daaku/go.httpgzip"
 	_ "github.com/lib/pq"
 	"net/http"
 	"os"
@@ -15,12 +14,12 @@ var ConnectionString = "user=jsname password=test dbname=jsname_dev sslmode=disa
 
 func main() {
 	m := pat.New()
-	m.Get("/api/word", httpgzip.NewHandler(http.HandlerFunc(WordMeBro)))
-	m.Get("/api/vote/:word/up", httpgzip.NewHandler(http.HandlerFunc(UpVoteMe)))
-	m.Get("/api/vote/:word/down", httpgzip.NewHandler(http.HandlerFunc(DownVoteMe)))
-	m.Get("/api/history", httpgzip.NewHandler(http.HandlerFunc(HistoryMe)))
-	m.Get("/api/top10", httpgzip.NewHandler(http.HandlerFunc(Top10Me)))
-	m.Get("/api/bottom10", httpgzip.NewHandler(http.HandlerFunc(Bottom10Me)))
+	m.Get("/api/word", http.HandlerFunc(WordMeBro))
+	m.Get("/api/vote/:word/up", http.HandlerFunc(UpVoteMe))
+	m.Get("/api/vote/:word/down", http.HandlerFunc(DownVoteMe))
+	m.Get("/api/history", http.HandlerFunc(HistoryMe))
+	m.Get("/api/top10", http.HandlerFunc(Top10Me))
+	m.Get("/api/bottom10", http.HandlerFunc(Bottom10Me))
 
 	http.Handle("/", m)
 
