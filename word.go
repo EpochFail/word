@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-var ConnectionString = "user=jsname password=test dbname=jsname_dev sslmode=disable"
+var ConnectionString = "user=word password=krampus dbname=word_dev sslmode=disable"
 
 func main() {
 	m := pat.New()
