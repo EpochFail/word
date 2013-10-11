@@ -4,13 +4,13 @@ Web service for doin' things with words. Yup.
 
 ## Use it
 
-Create a new database user, and give it the password of ````test```` when prompted
+Create a new database user, and give it the password of ````krampus```` when prompted
 
-    createuser -P jsname
+    createuser -P word
 
 Create a new database
     
-    createdb -O jsname jsname_dev
+    createdb -O word word_dev
 
 Install goose to run the database migrations
     
