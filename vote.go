@@ -37,17 +37,17 @@ func updateRating(word string, vote int, r *http.Request) {
 
 	realIp := r.Header.Get("X-Real-Ip")
 	forwardedFor := r.Header.Get("X-Forwarded-For")
-	
-  if realIp != "" {
+
+	if realIp != "" {
 		host = realIp
 	}
 
 	if forwardedFor != "" {
-    addresses := strings.Split(forwardedFor, ",")
+		addresses := strings.Split(forwardedFor, ",")
 		for _, ele := range addresses {
 			if ele != "127.0.0.1" {
 				host = strings.TrimSpace(ele)
-        break
+				break
 			}
 		}
 	}

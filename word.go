@@ -20,6 +20,7 @@ func main() {
 	m.Get("/api/history", http.HandlerFunc(HistoryMe))
 	m.Get("/api/top10", http.HandlerFunc(Top10Me))
 	m.Get("/api/bottom10", http.HandlerFunc(Bottom10Me))
+	m.Get("/api/random10", http.HandlerFunc(Random10Me))
 
 	http.Handle("/", m)
 
@@ -50,11 +51,49 @@ func WordMeBro(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	m := message{word, rating}
+	m := wordList{word, rating}
 	b, err := json.Marshal(m)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Fprintf(w, string(b[:]))
+}
+
+type wordList struct {
+	Word   string
+	Rating int
+}
+
+func Random10Me(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/json")
+
+	db, err := sql.Open("postgres", ConnectionString)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("select word, rating from words order by random() limit 10")
+	if err != nil {
+		panic(err)
+	}
+
+	var random10 []wordList
+	for rows.Next() {
+		var _word string
+		var _rating int
+
+		rows.Scan(&_word, &_rating)
+
+		random10 = append(random10, wordList{_word, _rating})
+	}
+
+	t, err := json.Marshal(random10)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintf(w, string(t[:]))
 }

@@ -8,11 +8,6 @@ import (
 	"net/http"
 )
 
-type message struct {
-	Word   string
-	Rating int
-}
-
 func HistoryMe(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
@@ -55,7 +50,7 @@ func Bottom10Me(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(b[:]))
 }
 
-func getStatsSlice(queryString string) []message {
+func getStatsSlice(queryString string) []wordList {
 	db, err := sql.Open("postgres", ConnectionString)
 	if err != nil {
 		panic(err)
@@ -67,14 +62,14 @@ func getStatsSlice(queryString string) []message {
 		panic(err)
 	}
 
-	var stats []message
+	var stats []wordList
 	for rows.Next() {
 		var _word string
 		var _rating int
 
 		rows.Scan(&_word, &_rating)
 
-		stats = append(stats, message{_word, _rating})
+		stats = append(stats, wordList{_word, _rating})
 	}
 
 	return stats
