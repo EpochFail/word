@@ -1,7 +1,0 @@
-development:
-    driver: postgres
-    open: user=word password=krampus dbname=word_dev sslmode=disable
-
-production:
-    driver: postgres
-    open: $WORD_CONNECTION_STRING

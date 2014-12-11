@@ -8,7 +8,10 @@ import (
 
 // Up is executed when this migration is applied
 func Up_20131009224738(txn *sql.Tx) {
-	file, _ := os.Open("wordlist.txt")
+	file, err := os.Open("seeds/wordlist.txt")
+	if err != nil {
+		panic(err)
+	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		txn.Exec("insert into words (word, rating) values ($1,0)", scanner.Text())
