@@ -27,3 +27,13 @@ Try it from your console with
 Result looks like 
     
     {"id":0,"word":"glittery","rating":0}
+
+## Docker stuff 
+    cd db && docker build -t word-db . && cd -
+    cd migrations && docker build -t word-migrations . && cd -
+    cd cmd/word && docker build -t word-app . && cd -
+
+    docker run -d --name word-db word-db
+    docker run --rm --link word-db:pg word-migrations
+    docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock jwilder/nginx-proxy
+    docker run -d --link word-db:pg --name word-app -e VIRTUAL_HOST=word.ralreegorganon.com word-app

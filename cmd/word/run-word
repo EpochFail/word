@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export PGUSER="${PGUSER:-word}"
+export PGPASSWORD="${PGPASSWORD:-krampus}"
+export PGDB="${PGDB:-word}"
+export PGPORT="${PGPORT:-$( echo "${PG_PORT_5432_TCP_PORT:-5432}" )}"
+export PGHOST="${PGHOST:-$( echo "${PG_PORT_5432_TCP_ADDR:-127.0.0.1}" )}"
+export PGSSLMODE="${PGSSLMODE:-disable}"
+export PGTZ="${PGTZ:-UTC}"
+
+go-wrapper run
